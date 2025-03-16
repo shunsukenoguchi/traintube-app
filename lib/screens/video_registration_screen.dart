@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../models/video_info.dart';
-import '../models/category.dart';
 import '../providers/video_info_provider.dart';
 import '../providers/category_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -19,8 +18,13 @@ class VideoRegistrationScreen extends HookConsumerWidget {
     final isMute = useState(true);
     final controller = useState<YoutubePlayerController?>(null);
     final videoId = useState<String?>(null);
-    final selectedCategoryId = useState<String>(ref.watch(selectedCategoryProvider));
+    final selectedCategoryId = useState<String>(
+      ref.watch(selectedCategoryProvider),
+    );
     final categorys = ref.watch(categorysProvider);
+
+    final sortedCategories = [...categorys]
+      ..sort((a, b) => a.index.compareTo(b.index));
 
     // フォーム部分のウィジェット
     Widget buildUrlForm() {
@@ -71,12 +75,13 @@ class VideoRegistrationScreen extends HookConsumerWidget {
                     child: DropdownButtonFormField<String>(
                       value: selectedCategoryId.value,
                       decoration: const InputDecoration(labelText: 'カテゴリー'),
-                      items: categorys.map((category) {
-                        return DropdownMenuItem<String>(
-                          value: category.id,
-                          child: Text(category.name),
-                        );
-                      }).toList(),
+                      items:
+                          sortedCategories.map((category) {
+                            return DropdownMenuItem<String>(
+                              value: category.id,
+                              child: Text(category.name),
+                            );
+                          }).toList(),
                       onChanged: (value) {
                         selectedCategoryId.value = value!;
                       },

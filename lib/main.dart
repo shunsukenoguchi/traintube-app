@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'screens/todo_screen.dart';
+import 'screens/category_edit_screen.dart';
 import 'screens/video_list_screen.dart';
 
 void main() {
@@ -29,7 +29,7 @@ class MainScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = useState(0);
 
-    final screens = [const VideoListScreen(), const TodoScreen()];
+    final screens = [const VideoListScreen(), const CategoryEditScreen()];
 
     return Scaffold(
       body: screens[currentIndex.value],
@@ -37,10 +37,13 @@ class MainScreen extends HookConsumerWidget {
         selectedIndex: currentIndex.value,
         onDestinationSelected: (index) => currentIndex.value = index,
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.video_library), label: '動画'),
           NavigationDestination(
-            icon: Icon(Icons.check_circle_outline),
-            label: 'Todo',
+            icon: Icon(Icons.play_circle_outlined),
+            label: '動画',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.category_outlined),
+            label: 'カテゴリー',
           ),
         ],
       ),

@@ -13,6 +13,7 @@ class Categorys extends _$Categorys {
       Category(
         name: '全て',
         description: 'すべてのカテゴリー',
+        index: 0,
         createdAt: now,
         updatedAt: now,
       ),
@@ -20,22 +21,24 @@ class Categorys extends _$Categorys {
   }
 
   void add(String name, String description) {
-  final newCategory = Category(
-    name: name,
-    description: description,
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
+    final newCategory = Category(
+      name: name,
+      description: description,
+      index: state.length,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
     );
     state = [state[0], ...state.sublist(1), newCategory];
   }
 
-  void update(String id, String name, String description) {
+  void update(String id, {String? name, String? description, int? index}) {
     state = [
       for (final category in state)
         if (category.id == id)
           category.copyWith(
-            name: name,
-            description: description,
+            name: name ?? category.name,
+            description: description ?? category.description,
+            index: index ?? category.index,
             updatedAt: DateTime.now(),
           )
         else
@@ -43,8 +46,20 @@ class Categorys extends _$Categorys {
     ];
   }
 
+  void updateOrder(List<Category> newOrder) {
+    state = [
+      for (var i = 0; i < newOrder.length; i++)
+        newOrder[i].copyWith(index: i),
+    ];
+  }
+
   void remove(String id) {
-    state = state.where((category) => category.id != id).toList();
+    final newState = state.where((category) => category.id != id).toList();
+    // 削除後にインデックスを振り直す
+    state = [
+      for (var i = 0; i < newState.length; i++)
+        newState[i].copyWith(index: i),
+    ];
   }
 }
 
