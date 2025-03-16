@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'video_info.freezed.dart';
 part 'video_info.g.dart';
@@ -6,6 +7,7 @@ part 'video_info.g.dart';
 @freezed
 class VideoInfo with _$VideoInfo {
   const factory VideoInfo({
+    @Default('') String id,
     required String url,
     required String title,
     required String channelName,

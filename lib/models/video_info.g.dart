@@ -8,6 +8,7 @@ part of 'video_info.dart';
 
 _$VideoInfoImpl _$$VideoInfoImplFromJson(Map<String, dynamic> json) =>
     _$VideoInfoImpl(
+      id: json['id'] as String? ?? '',
       url: json['url'] as String,
       title: json['title'] as String,
       channelName: json['channelName'] as String,
@@ -18,6 +19,7 @@ _$VideoInfoImpl _$$VideoInfoImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$VideoInfoImplToJson(_$VideoInfoImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'url': instance.url,
       'title': instance.title,
       'channelName': instance.channelName,

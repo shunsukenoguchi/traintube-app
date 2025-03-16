@@ -21,6 +21,7 @@ VideoInfo _$VideoInfoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VideoInfo {
+  String get id => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get channelName => throw _privateConstructorUsedError;
@@ -44,6 +45,7 @@ abstract class $VideoInfoCopyWith<$Res> {
       _$VideoInfoCopyWithImpl<$Res, VideoInfo>;
   @useResult
   $Res call({
+    String id,
     String url,
     String title,
     String channelName,
@@ -68,6 +70,7 @@ class _$VideoInfoCopyWithImpl<$Res, $Val extends VideoInfo>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? url = null,
     Object? title = null,
     Object? channelName = null,
@@ -77,6 +80,11 @@ class _$VideoInfoCopyWithImpl<$Res, $Val extends VideoInfo>
   }) {
     return _then(
       _value.copyWith(
+            id:
+                null == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String,
             url:
                 null == url
                     ? _value.url
@@ -123,6 +131,7 @@ abstract class _$$VideoInfoImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
+    String id,
     String url,
     String title,
     String channelName,
@@ -146,6 +155,7 @@ class __$$VideoInfoImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? url = null,
     Object? title = null,
     Object? channelName = null,
@@ -155,6 +165,11 @@ class __$$VideoInfoImplCopyWithImpl<$Res>
   }) {
     return _then(
       _$VideoInfoImpl(
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String,
         url:
             null == url
                 ? _value.url
@@ -194,6 +209,7 @@ class __$$VideoInfoImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$VideoInfoImpl implements _VideoInfo {
   const _$VideoInfoImpl({
+    this.id = '',
     required this.url,
     required this.title,
     required this.channelName,
@@ -205,6 +221,9 @@ class _$VideoInfoImpl implements _VideoInfo {
   factory _$VideoInfoImpl.fromJson(Map<String, dynamic> json) =>
       _$$VideoInfoImplFromJson(json);
 
+  @override
+  @JsonKey()
+  final String id;
   @override
   final String url;
   @override
@@ -220,7 +239,7 @@ class _$VideoInfoImpl implements _VideoInfo {
 
   @override
   String toString() {
-    return 'VideoInfo(url: $url, title: $title, channelName: $channelName, index: $index, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'VideoInfo(id: $id, url: $url, title: $title, channelName: $channelName, index: $index, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -228,6 +247,7 @@ class _$VideoInfoImpl implements _VideoInfo {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VideoInfoImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.channelName, channelName) ||
@@ -243,6 +263,7 @@ class _$VideoInfoImpl implements _VideoInfo {
   @override
   int get hashCode => Object.hash(
     runtimeType,
+    id,
     url,
     title,
     channelName,
@@ -267,6 +288,7 @@ class _$VideoInfoImpl implements _VideoInfo {
 
 abstract class _VideoInfo implements VideoInfo {
   const factory _VideoInfo({
+    final String id,
     required final String url,
     required final String title,
     required final String channelName,
@@ -278,6 +300,8 @@ abstract class _VideoInfo implements VideoInfo {
   factory _VideoInfo.fromJson(Map<String, dynamic> json) =
       _$VideoInfoImpl.fromJson;
 
+  @override
+  String get id;
   @override
   String get url;
   @override

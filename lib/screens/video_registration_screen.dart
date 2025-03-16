@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../models/video_info.dart';
 import '../providers/video_info_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class VideoRegistrationScreen extends HookConsumerWidget {
   const VideoRegistrationScreen({super.key});
@@ -117,7 +118,10 @@ class VideoRegistrationScreen extends HookConsumerWidget {
                       const SizedBox(height: 8),
                       Text(
                         'Channel: ${controller.value!.metadata.author}',
-                        style: const TextStyle(fontSize: 14, color: Colors.grey),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
                       ),
                       const SizedBox(height: 40),
                       // 登録ボタン
@@ -131,8 +135,10 @@ class VideoRegistrationScreen extends HookConsumerWidget {
                                 .read(videoInfosProvider.notifier)
                                 .addVideoInfo(
                                   VideoInfo(
+                                    id: const Uuid().v4(),
                                     title: controller.value!.metadata.title,
-                                    channelName: controller.value!.metadata.author,
+                                    channelName:
+                                        controller.value!.metadata.author,
                                     url: urlController.text,
                                     index: videoInfos.length,
                                     createdAt: DateTime.now(),

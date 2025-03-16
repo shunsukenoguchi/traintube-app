@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../providers/video_info_provider.dart';
+import '../models/video_info.dart';
 import 'youtube_player_screen.dart';
 import 'video_registration_screen.dart';
 
@@ -16,11 +17,21 @@ class VideoListScreen extends HookConsumerWidget {
       body:
           videoInfos.isEmpty
               ? const Center(child: Text('動画が登録されていません'))
-              : ListView.builder(
+              : ReorderableListView.builder(
                 itemCount: videoInfos.length,
+                onReorder: (oldIndex, newIndex) {
+                  if (oldIndex < newIndex) {
+                    newIndex -= 1;
+                  }
+                  final VideoInfo item = videoInfos[oldIndex];
+                  ref
+                      .read(videoInfosProvider.notifier)
+                      .updateIndex(item.url, newIndex);
+                },
                 itemBuilder: (context, index) {
                   final videoInfo = videoInfos[index];
                   return Padding(
+                    key: Key(videoInfo.id),
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: ListTile(
                       title: Text(

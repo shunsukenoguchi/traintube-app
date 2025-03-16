@@ -14,6 +14,16 @@ class VideoInfos extends _$VideoInfos {
     state = [...state, videoInfo];
   }
 
+  void updateIndex(String url, int index) {
+    state = [
+      for (final videoInfo in state)
+        if (videoInfo.url == url)
+          videoInfo.copyWith(index: index)
+        else
+          videoInfo,
+    ];
+  }
+
   void removeVideoInfo(String url) {
     state = state.where((element) => element.url != url).toList();
   }
