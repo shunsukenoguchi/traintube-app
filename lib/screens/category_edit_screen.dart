@@ -43,72 +43,113 @@ class CategoryEditScreen extends HookConsumerWidget {
                   return ReorderableDragStartListener(
                     key: ValueKey(category.id),
                     index: index,
-                    child: Card(
-                      child: ListTile(
-                        title: Text(category.name),
-                        subtitle: Text(category.description),
-                        leading: const Icon(Icons.drag_handle),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            final nameController = TextEditingController(
-                              text: category.name,
-                            );
-                            final descController = TextEditingController(
-                              text: category.description,
-                            );
+                    child: Dismissible(
+                      key: ValueKey(category.id),
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 16),
+                        child: const Icon(Icons.delete, color: Colors.white),
+                      ),
+                      direction: DismissDirection.endToStart,
+                      confirmDismiss:
+                          (direction) => showDialog(
+                            context: context,
+                            builder:
+                                (context) => AlertDialog(
+                                  title: const Text('カテゴリーの削除'),
+                                  content: Text(
+                                    '${category.name}を削除してもよろしいですか？',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed:
+                                          () => Navigator.pop(context, false),
+                                      child: const Text('キャンセル'),
+                                    ),
+                                    TextButton(
+                                      onPressed:
+                                          () => Navigator.pop(context, true),
+                                      child: const Text('削除'),
+                                    ),
+                                  ],
+                                ),
+                          ),
+                      onDismissed: (direction) {
+                        ref
+                            .read(categorysProvider.notifier)
+                            .remove(category.id);
+                      },
+                      child: Card(
+                        child: ListTile(
+                          title: Text(category.name),
+                          subtitle: Text(category.description),
+                          leading: const Icon(Icons.drag_handle),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              final nameController = TextEditingController(
+                                text: category.name,
+                              );
+                              final descController = TextEditingController(
+                                text: category.description,
+                              );
 
-                            showDialog(
-                              context: context,
-                              builder:
-                                  (context) => AlertDialog(
-                                    title: const Text('カテゴリーを編集'),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        TextField(
-                                          controller: nameController,
-                                          decoration: const InputDecoration(
-                                            labelText: 'カテゴリー名*',
+                              showDialog(
+                                context: context,
+                                builder:
+                                    (context) => AlertDialog(
+                                      title: const Text('カテゴリーを編集'),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          TextField(
+                                            controller: nameController,
+                                            decoration: const InputDecoration(
+                                              labelText: 'カテゴリー名*',
+                                            ),
                                           ),
+                                          const SizedBox(height: 16),
+                                          TextField(
+                                            controller: descController,
+                                            decoration: const InputDecoration(
+                                              labelText: '説明（任意）',
+                                            ),
+                                            maxLines: 3,
+                                          ),
+                                        ],
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed:
+                                              () => Navigator.pop(context),
+                                          child: const Text('キャンセル'),
                                         ),
-                                        const SizedBox(height: 16),
-                                        TextField(
-                                          controller: descController,
-                                          decoration: const InputDecoration(
-                                            labelText: '説明（任意）',
-                                          ),
-                                          maxLines: 3,
+                                        TextButton(
+                                          onPressed: () {
+                                            if (nameController
+                                                .text
+                                                .isNotEmpty) {
+                                              ref
+                                                  .read(
+                                                    categorysProvider.notifier,
+                                                  )
+                                                  .updateCategory(
+                                                    category.id,
+                                                    name: nameController.text,
+                                                    description:
+                                                        descController.text,
+                                                  );
+                                              Navigator.pop(context);
+                                            }
+                                          },
+                                          child: const Text('更新'),
                                         ),
                                       ],
                                     ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text('キャンセル'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          if (nameController.text.isNotEmpty) {
-                                            ref
-                                                .read(
-                                                  categorysProvider.notifier,
-                                                )
-                                                .updateCategory(
-                                                  category.id,
-                                                  name: nameController.text,
-                                                  description:
-                                                      descController.text,
-                                                );
-                                            Navigator.pop(context);
-                                          }
-                                        },
-                                        child: const Text('更新'),
-                                      ),
-                                    ],
-                                  ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),
