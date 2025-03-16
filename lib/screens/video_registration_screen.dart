@@ -31,6 +31,23 @@ class VideoRegistrationScreen extends HookConsumerWidget {
                   labelText: 'YouTubeのURL*',
                   hintText: 'https://www.youtube.com/watch?v=...',
                 ),
+                onChanged: (value) {
+                  if (value.isNotEmpty) {
+                    final newVideoId = YoutubePlayer.convertUrlToId(value);
+                    if (newVideoId != null && newVideoId != videoId.value) {
+                      videoId.value = newVideoId;
+                      controller.value?.dispose();
+                      controller.value = YoutubePlayerController(
+                        initialVideoId: newVideoId,
+                        flags: const YoutubePlayerFlags(
+                          autoPlay: true,
+                          mute: true,
+                          enableCaption: true,
+                        ),
+                      );
+                    }
+                  }
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'URLを入力してください';
@@ -42,29 +59,6 @@ class VideoRegistrationScreen extends HookConsumerWidget {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
-              if (controller.value == null)
-                ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      final newVideoId = YoutubePlayer.convertUrlToId(
-                        urlController.text,
-                      );
-                      if (newVideoId != null) {
-                        videoId.value = newVideoId;
-                        controller.value = YoutubePlayerController(
-                          initialVideoId: newVideoId,
-                          flags: const YoutubePlayerFlags(
-                            autoPlay: true,
-                            mute: true,
-                            enableCaption: true,
-                          ),
-                        );
-                      }
-                    }
-                  },
-                  child: const Text('プレビュー'),
-                ),
             ],
           ),
         ),
