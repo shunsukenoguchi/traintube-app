@@ -20,19 +20,42 @@ class VideoListScreen extends HookConsumerWidget {
                 itemCount: videoInfos.length,
                 itemBuilder: (context, index) {
                   final videoInfo = videoInfos[index];
-                  return ListTile(
-                    title: Text(videoInfo.title),
-                    subtitle: Text(videoInfo.channelName),
-                    trailing: const Icon(Icons.play_arrow),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder:
-                              (context) =>
-                                  YoutubePlayerScreen(url: videoInfo.url),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: ListTile(
+                      title: Text(
+                        videoInfo.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
                         ),
-                      );
-                    },
+                      ),
+                      subtitle: Text(
+                        videoInfo.channelName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      trailing: const Icon(
+                        Icons.play_arrow,
+                        color: Colors.black87,
+                        size: 28,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder:
+                                (context) =>
+                                    YoutubePlayerScreen(url: videoInfo.url),
+                          ),
+                        );
+                      },
+                    ),
                   );
                 },
               ),
