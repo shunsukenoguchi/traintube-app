@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'workout.dart';
+part of 'category.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,31 +15,32 @@ final _privateConstructorUsedError = UnsupportedError(
   'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
 );
 
-Workout _$WorkoutFromJson(Map<String, dynamic> json) {
-  return _Workout.fromJson(json);
+Category _$CategoryFromJson(Map<String, dynamic> json) {
+  return _Category.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Workout {
+mixin _$Category {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this Workout to a JSON map.
+  /// Serializes this Category to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of Workout
+  /// Create a copy of Category
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $WorkoutCopyWith<Workout> get copyWith => throw _privateConstructorUsedError;
+  $CategoryCopyWith<Category> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $WorkoutCopyWith<$Res> {
-  factory $WorkoutCopyWith(Workout value, $Res Function(Workout) then) =
-      _$WorkoutCopyWithImpl<$Res, Workout>;
+abstract class $CategoryCopyWith<$Res> {
+  factory $CategoryCopyWith(Category value, $Res Function(Category) then) =
+      _$CategoryCopyWithImpl<$Res, Category>;
   @useResult
   $Res call({
     String id,
@@ -51,16 +52,16 @@ abstract class $WorkoutCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$WorkoutCopyWithImpl<$Res, $Val extends Workout>
-    implements $WorkoutCopyWith<$Res> {
-  _$WorkoutCopyWithImpl(this._value, this._then);
+class _$CategoryCopyWithImpl<$Res, $Val extends Category>
+    implements $CategoryCopyWith<$Res> {
+  _$CategoryCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Workout
+  /// Create a copy of Category
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -105,11 +106,12 @@ class _$WorkoutCopyWithImpl<$Res, $Val extends Workout>
 }
 
 /// @nodoc
-abstract class _$$WorkoutImplCopyWith<$Res> implements $WorkoutCopyWith<$Res> {
-  factory _$$WorkoutImplCopyWith(
-    _$WorkoutImpl value,
-    $Res Function(_$WorkoutImpl) then,
-  ) = __$$WorkoutImplCopyWithImpl<$Res>;
+abstract class _$$CategoryImplCopyWith<$Res>
+    implements $CategoryCopyWith<$Res> {
+  factory _$$CategoryImplCopyWith(
+    _$CategoryImpl value,
+    $Res Function(_$CategoryImpl) then,
+  ) = __$$CategoryImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({
@@ -122,15 +124,15 @@ abstract class _$$WorkoutImplCopyWith<$Res> implements $WorkoutCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$WorkoutImplCopyWithImpl<$Res>
-    extends _$WorkoutCopyWithImpl<$Res, _$WorkoutImpl>
-    implements _$$WorkoutImplCopyWith<$Res> {
-  __$$WorkoutImplCopyWithImpl(
-    _$WorkoutImpl _value,
-    $Res Function(_$WorkoutImpl) _then,
+class __$$CategoryImplCopyWithImpl<$Res>
+    extends _$CategoryCopyWithImpl<$Res, _$CategoryImpl>
+    implements _$$CategoryImplCopyWith<$Res> {
+  __$$CategoryImplCopyWithImpl(
+    _$CategoryImpl _value,
+    $Res Function(_$CategoryImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of Workout
+  /// Create a copy of Category
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -142,7 +144,7 @@ class __$$WorkoutImplCopyWithImpl<$Res>
     Object? updatedAt = null,
   }) {
     return _then(
-      _$WorkoutImpl(
+      _$CategoryImpl(
         id:
             null == id
                 ? _value.id
@@ -175,8 +177,8 @@ class __$$WorkoutImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$WorkoutImpl implements _Workout {
-  const _$WorkoutImpl({
+class _$CategoryImpl implements _Category {
+  const _$CategoryImpl({
     this.id = '',
     required this.name,
     required this.description,
@@ -184,8 +186,8 @@ class _$WorkoutImpl implements _Workout {
     required this.updatedAt,
   });
 
-  factory _$WorkoutImpl.fromJson(Map<String, dynamic> json) =>
-      _$$WorkoutImplFromJson(json);
+  factory _$CategoryImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CategoryImplFromJson(json);
 
   @override
   @JsonKey()
@@ -201,14 +203,14 @@ class _$WorkoutImpl implements _Workout {
 
   @override
   String toString() {
-    return 'Workout(id: $id, name: $name, description: $description, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Category(id: $id, name: $name, description: $description, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$WorkoutImpl &&
+            other is _$CategoryImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
@@ -224,30 +226,31 @@ class _$WorkoutImpl implements _Workout {
   int get hashCode =>
       Object.hash(runtimeType, id, name, description, createdAt, updatedAt);
 
-  /// Create a copy of Workout
+  /// Create a copy of Category
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$WorkoutImplCopyWith<_$WorkoutImpl> get copyWith =>
-      __$$WorkoutImplCopyWithImpl<_$WorkoutImpl>(this, _$identity);
+  _$$CategoryImplCopyWith<_$CategoryImpl> get copyWith =>
+      __$$CategoryImplCopyWithImpl<_$CategoryImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$WorkoutImplToJson(this);
+    return _$$CategoryImplToJson(this);
   }
 }
 
-abstract class _Workout implements Workout {
-  const factory _Workout({
+abstract class _Category implements Category {
+  const factory _Category({
     final String id,
     required final String name,
     required final String description,
     required final DateTime createdAt,
     required final DateTime updatedAt,
-  }) = _$WorkoutImpl;
+  }) = _$CategoryImpl;
 
-  factory _Workout.fromJson(Map<String, dynamic> json) = _$WorkoutImpl.fromJson;
+  factory _Category.fromJson(Map<String, dynamic> json) =
+      _$CategoryImpl.fromJson;
 
   @override
   String get id;
@@ -260,10 +263,10 @@ abstract class _Workout implements Workout {
   @override
   DateTime get updatedAt;
 
-  /// Create a copy of Workout
+  /// Create a copy of Category
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$WorkoutImplCopyWith<_$WorkoutImpl> get copyWith =>
+  _$$CategoryImplCopyWith<_$CategoryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

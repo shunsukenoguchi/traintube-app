@@ -3,8 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../models/video_info.dart';
+import '../models/category.dart';
 import '../providers/video_info_provider.dart';
-import '../providers/workout_provider.dart';
+import '../providers/category_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class VideoRegistrationScreen extends HookConsumerWidget {
@@ -18,8 +19,8 @@ class VideoRegistrationScreen extends HookConsumerWidget {
     final isMute = useState(true);
     final controller = useState<YoutubePlayerController?>(null);
     final videoId = useState<String?>(null);
-    final selectedWorkoutId = useState<String?>(null);
-    final workouts = ref.watch(workoutsProvider);
+    final selectedCategoryId = useState<String?>(null);
+    final categorys = ref.watch(categorysProvider);
 
     // フォーム部分のウィジェット
     Widget buildUrlForm() {
@@ -63,30 +64,89 @@ class VideoRegistrationScreen extends HookConsumerWidget {
                   return null;
                 },
               ),
-              if (workouts.isNotEmpty) ...[
-                const SizedBox(height: 16),
-                DropdownButtonFormField<String?>(
-                  value: selectedWorkoutId.value,
-                  decoration: const InputDecoration(
-                    labelText: 'ワークアウト',
-                  ),
-                  items: [
-                    const DropdownMenuItem<String?>(
-                      value: null,
-                      child: Text('選択なし'),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField<String?>(
+                      value: selectedCategoryId.value,
+                      decoration: const InputDecoration(labelText: 'ワークアウト'),
+                      items: [
+                        const DropdownMenuItem<String?>(
+                          value: null,
+                          child: Text('選択なし'),
+                        ),
+                        ...categorys.map((category) {
+                          return DropdownMenuItem<String?>(
+                            value: category.id,
+                            child: Text(category.name),
+                          );
+                        }),
+                      ],
+                      onChanged: (value) {
+                        selectedCategoryId.value = value;
+                      },
                     ),
-                    ...workouts.map((workout) {
-                      return DropdownMenuItem<String?>(
-                        value: workout.id,
-                        child: Text(workout.name),
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    icon: const Icon(Icons.add_circle),
+                    onPressed: () {
+                      final nameController = TextEditingController();
+                      final descriptionController = TextEditingController();
+                      showDialog(
+                        context: context,
+                        builder:
+                            (context) => AlertDialog(
+                              title: const Text('新規ワークアウト追加'),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextField(
+                                    controller: nameController,
+                                    decoration: const InputDecoration(
+                                      labelText: 'ワークアウト名*',
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  TextField(
+                                    controller: descriptionController,
+                                    decoration: const InputDecoration(
+                                      labelText: '説明（任意）',
+                                    ),
+                                    maxLines: 3,
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('キャンセル'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    if (nameController.text.isNotEmpty) {
+                                      ref
+                                          .read(categorysProvider.notifier)
+                                          .add(
+                                            nameController.text,
+                                            descriptionController.text,
+                                          );
+                                      final newCategory =
+                                          ref.read(categorysProvider).last;
+                                      selectedCategoryId.value = newCategory.id;
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                  child: const Text('追加'),
+                                ),
+                              ],
+                            ),
                       );
-                    }),
-                  ],
-                  onChanged: (value) {
-                    selectedWorkoutId.value = value;
-                  },
-                ),
-              ],
+                    },
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -170,7 +230,7 @@ class VideoRegistrationScreen extends HookConsumerWidget {
                                     index: videoInfos.length,
                                     createdAt: DateTime.now(),
                                     updatedAt: DateTime.now(),
-                                    workoutId: selectedWorkoutId.value,
+                                    categoryId: selectedCategoryId.value,
                                   ),
                                 );
                             Navigator.pop(context);

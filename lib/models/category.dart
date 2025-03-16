@@ -1,18 +1,19 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
-part 'workout.freezed.dart';
-part 'workout.g.dart';
+part 'category.freezed.dart';
+part 'category.g.dart';
 
 @freezed
-class Workout with _$Workout {
-  const factory Workout({
+class Category with _$Category {
+  const factory Category({
     @Default('') String id,
     required String name,
     required String description,
     required DateTime createdAt,
     required DateTime updatedAt,
-  }) = _Workout;
+  }) = _Category;
 
-  factory Workout.fromJson(Map<String, dynamic> json) => _$WorkoutFromJson(json);
+  factory Category.fromJson(Map<String, dynamic> json) =>
+      _$CategoryFromJson(json);
 }

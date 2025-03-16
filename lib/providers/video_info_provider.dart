@@ -10,6 +10,18 @@ class VideoInfos extends _$VideoInfos {
     return [];
   }
 
+  void fetchVideoInfo(String url) {
+    final videoInfo = VideoInfo(
+      url: url,
+      title: 'title',
+      channelName: 'channelName',
+      index: 0,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+    state = [...state, videoInfo];
+  }
+
   void addVideoInfo(VideoInfo videoInfo) {
     state = [...state, videoInfo];
   }

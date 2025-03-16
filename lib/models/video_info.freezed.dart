@@ -28,7 +28,7 @@ mixin _$VideoInfo {
   int get index => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
-  String? get workoutId => throw _privateConstructorUsedError;
+  String? get categoryId => throw _privateConstructorUsedError;
 
   /// Serializes this VideoInfo to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -53,7 +53,7 @@ abstract class $VideoInfoCopyWith<$Res> {
     int index,
     DateTime createdAt,
     DateTime updatedAt,
-    String? workoutId,
+    String? categoryId,
   });
 }
 
@@ -79,7 +79,7 @@ class _$VideoInfoCopyWithImpl<$Res, $Val extends VideoInfo>
     Object? index = null,
     Object? createdAt = null,
     Object? updatedAt = null,
-    Object? workoutId = freezed,
+    Object? categoryId = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -118,10 +118,10 @@ class _$VideoInfoCopyWithImpl<$Res, $Val extends VideoInfo>
                     ? _value.updatedAt
                     : updatedAt // ignore: cast_nullable_to_non_nullable
                         as DateTime,
-            workoutId:
-                freezed == workoutId
-                    ? _value.workoutId
-                    : workoutId // ignore: cast_nullable_to_non_nullable
+            categoryId:
+                freezed == categoryId
+                    ? _value.categoryId
+                    : categoryId // ignore: cast_nullable_to_non_nullable
                         as String?,
           )
           as $Val,
@@ -146,7 +146,7 @@ abstract class _$$VideoInfoImplCopyWith<$Res>
     int index,
     DateTime createdAt,
     DateTime updatedAt,
-    String? workoutId,
+    String? categoryId,
   });
 }
 
@@ -171,7 +171,7 @@ class __$$VideoInfoImplCopyWithImpl<$Res>
     Object? index = null,
     Object? createdAt = null,
     Object? updatedAt = null,
-    Object? workoutId = freezed,
+    Object? categoryId = freezed,
   }) {
     return _then(
       _$VideoInfoImpl(
@@ -210,10 +210,10 @@ class __$$VideoInfoImplCopyWithImpl<$Res>
                 ? _value.updatedAt
                 : updatedAt // ignore: cast_nullable_to_non_nullable
                     as DateTime,
-        workoutId:
-            freezed == workoutId
-                ? _value.workoutId
-                : workoutId // ignore: cast_nullable_to_non_nullable
+        categoryId:
+            freezed == categoryId
+                ? _value.categoryId
+                : categoryId // ignore: cast_nullable_to_non_nullable
                     as String?,
       ),
     );
@@ -231,7 +231,7 @@ class _$VideoInfoImpl implements _VideoInfo {
     required this.index,
     required this.createdAt,
     required this.updatedAt,
-    this.workoutId,
+    this.categoryId,
   });
 
   factory _$VideoInfoImpl.fromJson(Map<String, dynamic> json) =>
@@ -253,11 +253,11 @@ class _$VideoInfoImpl implements _VideoInfo {
   @override
   final DateTime updatedAt;
   @override
-  final String? workoutId;
+  final String? categoryId;
 
   @override
   String toString() {
-    return 'VideoInfo(id: $id, url: $url, title: $title, channelName: $channelName, index: $index, createdAt: $createdAt, updatedAt: $updatedAt, workoutId: $workoutId)';
+    return 'VideoInfo(id: $id, url: $url, title: $title, channelName: $channelName, index: $index, createdAt: $createdAt, updatedAt: $updatedAt, categoryId: $categoryId)';
   }
 
   @override
@@ -275,8 +275,8 @@ class _$VideoInfoImpl implements _VideoInfo {
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
-            (identical(other.workoutId, workoutId) ||
-                other.workoutId == workoutId));
+            (identical(other.categoryId, categoryId) ||
+                other.categoryId == categoryId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -290,7 +290,7 @@ class _$VideoInfoImpl implements _VideoInfo {
     index,
     createdAt,
     updatedAt,
-    workoutId,
+    categoryId,
   );
 
   /// Create a copy of VideoInfo
@@ -316,7 +316,7 @@ abstract class _VideoInfo implements VideoInfo {
     required final int index,
     required final DateTime createdAt,
     required final DateTime updatedAt,
-    final String? workoutId,
+    final String? categoryId,
   }) = _$VideoInfoImpl;
 
   factory _VideoInfo.fromJson(Map<String, dynamic> json) =
@@ -337,7 +337,7 @@ abstract class _VideoInfo implements VideoInfo {
   @override
   DateTime get updatedAt;
   @override
-  String? get workoutId;
+  String? get categoryId;
 
   /// Create a copy of VideoInfo
   /// with the given fields replaced by the non-null parameter values.

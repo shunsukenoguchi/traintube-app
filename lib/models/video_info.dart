@@ -14,7 +14,7 @@ class VideoInfo with _$VideoInfo {
     required int index,
     required DateTime createdAt,
     required DateTime updatedAt,
-    String? workoutId,
+    String? categoryId,
   }) = _VideoInfo;
 
   factory VideoInfo.fromJson(Map<String, dynamic> json) =>
