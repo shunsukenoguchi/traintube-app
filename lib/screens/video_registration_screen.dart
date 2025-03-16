@@ -99,62 +99,67 @@ class VideoRegistrationScreen extends HookConsumerWidget {
           onReady: () {},
         ),
         builder: (context, player) {
-          return Column(
-            children: [
-              // URL入力フォーム
-              buildUrlForm(),
-              player,
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      controller.value!.metadata.title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Channel: ${controller.value!.metadata.author}',
-                      style: const TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 40),
-                    // 登録ボタン
-                    SizedBox(
-                      width: double.infinity,
-                      height: 56,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          final videoInfos = ref.read(videoInfosProvider);
-                          ref
-                              .read(videoInfosProvider.notifier)
-                              .addVideoInfo(
-                                VideoInfo(
-                                  title: controller.value!.metadata.title,
-                                  channelName:
-                                      controller.value!.metadata.author,
-                                  url: urlController.text,
-                                  index: videoInfos.length,
-                                  createdAt: DateTime.now(),
-                                  updatedAt: DateTime.now(),
-                                ),
-                              );
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(Icons.add, size: 28),
-                        label: const Text(
-                          'この動画を登録',
-                          style: TextStyle(fontSize: 18),
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                // URL入力フォーム
+                buildUrlForm(),
+                player,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 24.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        controller.value!.metadata.title,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 8),
+                      Text(
+                        'Channel: ${controller.value!.metadata.author}',
+                        style: const TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                      const SizedBox(height: 40),
+                      // 登録ボタン
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            final videoInfos = ref.read(videoInfosProvider);
+                            ref
+                                .read(videoInfosProvider.notifier)
+                                .addVideoInfo(
+                                  VideoInfo(
+                                    title: controller.value!.metadata.title,
+                                    channelName: controller.value!.metadata.author,
+                                    url: urlController.text,
+                                    index: videoInfos.length,
+                                    createdAt: DateTime.now(),
+                                    updatedAt: DateTime.now(),
+                                  ),
+                                );
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.add, size: 28),
+                          label: const Text(
+                            'この動画を登録',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       );

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import '../models/video_info.dart';
 import '../providers/video_info_provider.dart';
 import 'youtube_player_screen.dart';
 import 'video_registration_screen.dart';
