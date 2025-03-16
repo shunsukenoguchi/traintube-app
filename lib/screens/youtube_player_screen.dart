@@ -6,15 +6,15 @@ import '../models/video_record.dart';
 import '../providers/video_record_provider.dart';
 
 class YoutubePlayerScreen extends HookConsumerWidget {
-  const YoutubePlayerScreen({super.key, required this.videoId});
+  const YoutubePlayerScreen({super.key, required this.url});
 
-  final String videoId;
+  final String url;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useMemoized(
       () => YoutubePlayerController(
-        initialVideoId: "yK6CQDj_Ggo",
+        initialVideoId: YoutubePlayer.convertUrlToId(url) ?? '',
         flags: const YoutubePlayerFlags(
           autoPlay: true,
           mute: true,
@@ -154,21 +154,24 @@ class YoutubePlayerScreen extends HookConsumerWidget {
                             color: Colors.red,
                           ),
                           onPressed: () {
-                            final record = VideoRecord(
-                              videoId: videoId,
-                              title: controller.metadata.title,
-                              channelName: controller.metadata.author,
-                              recordedAt: DateTime.now(),
-                            );
-                            ref
-                                .read(videoRecordsProvider.notifier)
-                                .addRecord(record);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('動画を記録しました'),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
+                            final videoId = YoutubePlayer.convertUrlToId(url);
+                            if (videoId != null) {
+                              final record = VideoRecord(
+                                videoId: videoId,
+                                title: controller.metadata.title,
+                                channelName: controller.metadata.author,
+                                recordedAt: DateTime.now(),
+                              );
+                              ref
+                                  .read(videoRecordsProvider.notifier)
+                                  .addRecord(record);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('動画を記録しました'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            }
                           },
                         ),
                       ],

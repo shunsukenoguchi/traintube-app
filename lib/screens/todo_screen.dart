@@ -38,21 +38,24 @@ class TodoScreen extends HookConsumerWidget {
                       todo.isCompleted ? TextDecoration.lineThrough : null,
                 ),
               ),
-              trailing: todo.videoId.isNotEmpty
-                  ? IconButton(
-                      icon: const Icon(Icons.play_circle_outline),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => YoutubePlayerScreen(
-                              videoId: todo.videoId,
+              trailing:
+                  todo.videoId.isNotEmpty
+                      ? IconButton(
+                        icon: const Icon(Icons.play_circle_outline),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => YoutubePlayerScreen(
+                                    url:
+                                        'https://www.youtube.com/watch?v=${"3XEdhurz9fw"}',
+                                  ),
                             ),
-                          ),
-                        );
-                      },
-                    )
-                  : null,
+                          );
+                        },
+                      )
+                      : null,
             ),
           );
         },
