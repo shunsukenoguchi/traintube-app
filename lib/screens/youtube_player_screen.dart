@@ -101,7 +101,7 @@ class YoutubePlayerScreen extends HookConsumerWidget {
                           iconSize: 48,
                           icon: const Icon(
                             Icons.replay_10,
-                            color: Colors.black87,
+                            color: Colors.blueGrey,
                           ),
                           onPressed: () {
                             final position = controller.value.position;
@@ -117,7 +117,7 @@ class YoutubePlayerScreen extends HookConsumerWidget {
                             isPlaying.value
                                 ? Icons.pause_circle_filled
                                 : Icons.play_circle_filled,
-                            color: Colors.black87,
+                            color: Colors.blueGrey,
                           ),
                           onPressed: () {
                             if (isPlaying.value) {
@@ -132,7 +132,7 @@ class YoutubePlayerScreen extends HookConsumerWidget {
                           iconSize: 48,
                           icon: const Icon(
                             Icons.forward_10,
-                            color: Colors.black87,
+                            color: Colors.blueGrey,
                           ),
                           onPressed: () {
                             final position = controller.value.position;
@@ -144,15 +144,12 @@ class YoutubePlayerScreen extends HookConsumerWidget {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          iconSize: 48,
-                          icon: const Icon(
-                            Icons.add_circle_outline,
-                            color: Colors.red,
-                          ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: ElevatedButton(
                           onPressed: () {
                             final videoId = YoutubePlayer.convertUrlToId(url);
                             if (videoId != null) {
@@ -173,8 +170,12 @@ class YoutubePlayerScreen extends HookConsumerWidget {
                               );
                             }
                           },
+                          child: const Text(
+                            '動画を記録する',
+                            style: TextStyle(fontSize: 16),
+                          ),
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
