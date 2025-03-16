@@ -103,9 +103,7 @@ class VideoRegistrationScreen extends HookConsumerWidget {
             children: [
               // URL入力フォーム
               buildUrlForm(),
-              // プレーヤー
               player,
-              // メタデータ表示
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -123,58 +121,7 @@ class VideoRegistrationScreen extends HookConsumerWidget {
                       'Channel: ${controller.value!.metadata.author}',
                       style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
-                    const SizedBox(height: 16),
-                    // // コントロールボタン
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     IconButton(
-                    //       iconSize: 48,
-                    //       icon: const Icon(
-                    //         Icons.replay_10,
-                    //         color: Colors.black87,
-                    //       ),
-                    //       onPressed: () {
-                    //         final position = controller.value!.value.position;
-                    //         controller.value!.seekTo(
-                    //           position - const Duration(seconds: 10),
-                    //         );
-                    //       },
-                    //     ),
-                    //     const SizedBox(width: 16),
-                    //     IconButton(
-                    //       iconSize: 64,
-                    //       icon: Icon(
-                    //         isPlaying.value
-                    //             ? Icons.pause_circle_filled
-                    //             : Icons.play_circle_filled,
-                    //         color: Colors.black87,
-                    //       ),
-                    //       onPressed: () {
-                    //         if (isPlaying.value) {
-                    //           controller.value!.pause();
-                    //         } else {
-                    //           controller.value!.play();
-                    //         }
-                    //       },
-                    //     ),
-                    //     const SizedBox(width: 16),
-                    //     IconButton(
-                    //       iconSize: 48,
-                    //       icon: const Icon(
-                    //         Icons.forward_10,
-                    //         color: Colors.black87,
-                    //       ),
-                    //       onPressed: () {
-                    //         final position = controller.value!.value.position;
-                    //         controller.value!.seekTo(
-                    //           position + const Duration(seconds: 10),
-                    //         );
-                    //       },
-                    //     ),
-                    //   ],
-                    // ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 40),
                     // 登録ボタン
                     SizedBox(
                       width: double.infinity,
