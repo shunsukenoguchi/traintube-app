@@ -11,11 +11,7 @@ class VideoInfos extends _$VideoInfos {
   }
 
   void addVideoInfo(VideoInfo videoInfo) {
-    final newList = [...state];
-    final index = newList.indexWhere((element) => element.url == videoInfo.url);
-    if (index == -1) {
-      state = [...state, videoInfo];
-    }
+    state = [...state, videoInfo];
   }
 
   void removeVideoInfo(String url) {
