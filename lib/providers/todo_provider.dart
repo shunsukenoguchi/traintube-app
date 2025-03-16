@@ -10,10 +10,11 @@ class TodoList extends _$TodoList {
     return [];
   }
 
-  void addTodo(String title) {
+  void addTodo(String title, {String videoId = ''}) {
     final todo = Todo(
       id: DateTime.now().toIso8601String(),
       title: title,
+      videoId: videoId,
     );
     state = [...state, todo];
   }
