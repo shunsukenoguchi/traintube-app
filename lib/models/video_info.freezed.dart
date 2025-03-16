@@ -28,6 +28,7 @@ mixin _$VideoInfo {
   int get index => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
+  String? get workoutId => throw _privateConstructorUsedError;
 
   /// Serializes this VideoInfo to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -52,6 +53,7 @@ abstract class $VideoInfoCopyWith<$Res> {
     int index,
     DateTime createdAt,
     DateTime updatedAt,
+    String? workoutId,
   });
 }
 
@@ -77,6 +79,7 @@ class _$VideoInfoCopyWithImpl<$Res, $Val extends VideoInfo>
     Object? index = null,
     Object? createdAt = null,
     Object? updatedAt = null,
+    Object? workoutId = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -115,6 +118,11 @@ class _$VideoInfoCopyWithImpl<$Res, $Val extends VideoInfo>
                     ? _value.updatedAt
                     : updatedAt // ignore: cast_nullable_to_non_nullable
                         as DateTime,
+            workoutId:
+                freezed == workoutId
+                    ? _value.workoutId
+                    : workoutId // ignore: cast_nullable_to_non_nullable
+                        as String?,
           )
           as $Val,
     );
@@ -138,6 +146,7 @@ abstract class _$$VideoInfoImplCopyWith<$Res>
     int index,
     DateTime createdAt,
     DateTime updatedAt,
+    String? workoutId,
   });
 }
 
@@ -162,6 +171,7 @@ class __$$VideoInfoImplCopyWithImpl<$Res>
     Object? index = null,
     Object? createdAt = null,
     Object? updatedAt = null,
+    Object? workoutId = freezed,
   }) {
     return _then(
       _$VideoInfoImpl(
@@ -200,6 +210,11 @@ class __$$VideoInfoImplCopyWithImpl<$Res>
                 ? _value.updatedAt
                 : updatedAt // ignore: cast_nullable_to_non_nullable
                     as DateTime,
+        workoutId:
+            freezed == workoutId
+                ? _value.workoutId
+                : workoutId // ignore: cast_nullable_to_non_nullable
+                    as String?,
       ),
     );
   }
@@ -216,6 +231,7 @@ class _$VideoInfoImpl implements _VideoInfo {
     required this.index,
     required this.createdAt,
     required this.updatedAt,
+    this.workoutId,
   });
 
   factory _$VideoInfoImpl.fromJson(Map<String, dynamic> json) =>
@@ -236,10 +252,12 @@ class _$VideoInfoImpl implements _VideoInfo {
   final DateTime createdAt;
   @override
   final DateTime updatedAt;
+  @override
+  final String? workoutId;
 
   @override
   String toString() {
-    return 'VideoInfo(id: $id, url: $url, title: $title, channelName: $channelName, index: $index, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'VideoInfo(id: $id, url: $url, title: $title, channelName: $channelName, index: $index, createdAt: $createdAt, updatedAt: $updatedAt, workoutId: $workoutId)';
   }
 
   @override
@@ -256,7 +274,9 @@ class _$VideoInfoImpl implements _VideoInfo {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+                other.updatedAt == updatedAt) &&
+            (identical(other.workoutId, workoutId) ||
+                other.workoutId == workoutId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -270,6 +290,7 @@ class _$VideoInfoImpl implements _VideoInfo {
     index,
     createdAt,
     updatedAt,
+    workoutId,
   );
 
   /// Create a copy of VideoInfo
@@ -295,6 +316,7 @@ abstract class _VideoInfo implements VideoInfo {
     required final int index,
     required final DateTime createdAt,
     required final DateTime updatedAt,
+    final String? workoutId,
   }) = _$VideoInfoImpl;
 
   factory _VideoInfo.fromJson(Map<String, dynamic> json) =
@@ -314,6 +336,8 @@ abstract class _VideoInfo implements VideoInfo {
   DateTime get createdAt;
   @override
   DateTime get updatedAt;
+  @override
+  String? get workoutId;
 
   /// Create a copy of VideoInfo
   /// with the given fields replaced by the non-null parameter values.

@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../models/video_info.dart';
 import '../providers/video_info_provider.dart';
+import '../providers/workout_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class VideoRegistrationScreen extends HookConsumerWidget {
@@ -17,6 +18,8 @@ class VideoRegistrationScreen extends HookConsumerWidget {
     final isMute = useState(true);
     final controller = useState<YoutubePlayerController?>(null);
     final videoId = useState<String?>(null);
+    final selectedWorkoutId = useState<String?>(null);
+    final workouts = ref.watch(workoutsProvider);
 
     // フォーム部分のウィジェット
     Widget buildUrlForm() {
@@ -60,6 +63,30 @@ class VideoRegistrationScreen extends HookConsumerWidget {
                   return null;
                 },
               ),
+              if (workouts.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                DropdownButtonFormField<String?>(
+                  value: selectedWorkoutId.value,
+                  decoration: const InputDecoration(
+                    labelText: 'ワークアウト',
+                  ),
+                  items: [
+                    const DropdownMenuItem<String?>(
+                      value: null,
+                      child: Text('選択なし'),
+                    ),
+                    ...workouts.map((workout) {
+                      return DropdownMenuItem<String?>(
+                        value: workout.id,
+                        child: Text(workout.name),
+                      );
+                    }),
+                  ],
+                  onChanged: (value) {
+                    selectedWorkoutId.value = value;
+                  },
+                ),
+              ],
             ],
           ),
         ),
@@ -143,6 +170,7 @@ class VideoRegistrationScreen extends HookConsumerWidget {
                                     index: videoInfos.length,
                                     createdAt: DateTime.now(),
                                     updatedAt: DateTime.now(),
+                                    workoutId: selectedWorkoutId.value,
                                   ),
                                 );
                             Navigator.pop(context);
