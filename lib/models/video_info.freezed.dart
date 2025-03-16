@@ -25,8 +25,8 @@ mixin _$VideoInfo {
   String get url => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get channelName => throw _privateConstructorUsedError;
-  int get index => throw _privateConstructorUsedError;
-  int get categoryIndex => throw _privateConstructorUsedError;
+  int get sortOrder => throw _privateConstructorUsedError;
+  int get categorySortOrder => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
   String? get categoryId => throw _privateConstructorUsedError;
@@ -51,8 +51,8 @@ abstract class $VideoInfoCopyWith<$Res> {
     String url,
     String title,
     String channelName,
-    int index,
-    int categoryIndex,
+    int sortOrder,
+    int categorySortOrder,
     DateTime createdAt,
     DateTime updatedAt,
     String? categoryId,
@@ -78,8 +78,8 @@ class _$VideoInfoCopyWithImpl<$Res, $Val extends VideoInfo>
     Object? url = null,
     Object? title = null,
     Object? channelName = null,
-    Object? index = null,
-    Object? categoryIndex = null,
+    Object? sortOrder = null,
+    Object? categorySortOrder = null,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? categoryId = freezed,
@@ -106,15 +106,15 @@ class _$VideoInfoCopyWithImpl<$Res, $Val extends VideoInfo>
                     ? _value.channelName
                     : channelName // ignore: cast_nullable_to_non_nullable
                         as String,
-            index:
-                null == index
-                    ? _value.index
-                    : index // ignore: cast_nullable_to_non_nullable
+            sortOrder:
+                null == sortOrder
+                    ? _value.sortOrder
+                    : sortOrder // ignore: cast_nullable_to_non_nullable
                         as int,
-            categoryIndex:
-                null == categoryIndex
-                    ? _value.categoryIndex
-                    : categoryIndex // ignore: cast_nullable_to_non_nullable
+            categorySortOrder:
+                null == categorySortOrder
+                    ? _value.categorySortOrder
+                    : categorySortOrder // ignore: cast_nullable_to_non_nullable
                         as int,
             createdAt:
                 null == createdAt
@@ -151,8 +151,8 @@ abstract class _$$VideoInfoImplCopyWith<$Res>
     String url,
     String title,
     String channelName,
-    int index,
-    int categoryIndex,
+    int sortOrder,
+    int categorySortOrder,
     DateTime createdAt,
     DateTime updatedAt,
     String? categoryId,
@@ -177,8 +177,8 @@ class __$$VideoInfoImplCopyWithImpl<$Res>
     Object? url = null,
     Object? title = null,
     Object? channelName = null,
-    Object? index = null,
-    Object? categoryIndex = null,
+    Object? sortOrder = null,
+    Object? categorySortOrder = null,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? categoryId = freezed,
@@ -205,15 +205,15 @@ class __$$VideoInfoImplCopyWithImpl<$Res>
                 ? _value.channelName
                 : channelName // ignore: cast_nullable_to_non_nullable
                     as String,
-        index:
-            null == index
-                ? _value.index
-                : index // ignore: cast_nullable_to_non_nullable
+        sortOrder:
+            null == sortOrder
+                ? _value.sortOrder
+                : sortOrder // ignore: cast_nullable_to_non_nullable
                     as int,
-        categoryIndex:
-            null == categoryIndex
-                ? _value.categoryIndex
-                : categoryIndex // ignore: cast_nullable_to_non_nullable
+        categorySortOrder:
+            null == categorySortOrder
+                ? _value.categorySortOrder
+                : categorySortOrder // ignore: cast_nullable_to_non_nullable
                     as int,
         createdAt:
             null == createdAt
@@ -243,8 +243,8 @@ class _$VideoInfoImpl implements _VideoInfo {
     required this.url,
     required this.title,
     required this.channelName,
-    required this.index,
-    this.categoryIndex = 0,
+    required this.sortOrder,
+    this.categorySortOrder = 0,
     required this.createdAt,
     required this.updatedAt,
     this.categoryId,
@@ -263,10 +263,10 @@ class _$VideoInfoImpl implements _VideoInfo {
   @override
   final String channelName;
   @override
-  final int index;
+  final int sortOrder;
   @override
   @JsonKey()
-  final int categoryIndex;
+  final int categorySortOrder;
   @override
   final DateTime createdAt;
   @override
@@ -276,7 +276,7 @@ class _$VideoInfoImpl implements _VideoInfo {
 
   @override
   String toString() {
-    return 'VideoInfo(id: $id, url: $url, title: $title, channelName: $channelName, index: $index, categoryIndex: $categoryIndex, createdAt: $createdAt, updatedAt: $updatedAt, categoryId: $categoryId)';
+    return 'VideoInfo(id: $id, url: $url, title: $title, channelName: $channelName, sortOrder: $sortOrder, categorySortOrder: $categorySortOrder, createdAt: $createdAt, updatedAt: $updatedAt, categoryId: $categoryId)';
   }
 
   @override
@@ -289,9 +289,10 @@ class _$VideoInfoImpl implements _VideoInfo {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.channelName, channelName) ||
                 other.channelName == channelName) &&
-            (identical(other.index, index) || other.index == index) &&
-            (identical(other.categoryIndex, categoryIndex) ||
-                other.categoryIndex == categoryIndex) &&
+            (identical(other.sortOrder, sortOrder) ||
+                other.sortOrder == sortOrder) &&
+            (identical(other.categorySortOrder, categorySortOrder) ||
+                other.categorySortOrder == categorySortOrder) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -308,8 +309,8 @@ class _$VideoInfoImpl implements _VideoInfo {
     url,
     title,
     channelName,
-    index,
-    categoryIndex,
+    sortOrder,
+    categorySortOrder,
     createdAt,
     updatedAt,
     categoryId,
@@ -335,8 +336,8 @@ abstract class _VideoInfo implements VideoInfo {
     required final String url,
     required final String title,
     required final String channelName,
-    required final int index,
-    final int categoryIndex,
+    required final int sortOrder,
+    final int categorySortOrder,
     required final DateTime createdAt,
     required final DateTime updatedAt,
     final String? categoryId,
@@ -354,9 +355,9 @@ abstract class _VideoInfo implements VideoInfo {
   @override
   String get channelName;
   @override
-  int get index;
+  int get sortOrder;
   @override
-  int get categoryIndex;
+  int get categorySortOrder;
   @override
   DateTime get createdAt;
   @override

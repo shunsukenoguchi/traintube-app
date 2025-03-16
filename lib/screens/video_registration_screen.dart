@@ -23,8 +23,14 @@ class VideoRegistrationScreen extends HookConsumerWidget {
     );
     final categorys = ref.watch(categorysProvider);
 
-    final sortedCategories = [...categorys]
-      ..sort((a, b) => a.index.compareTo(b.index));
+    final sortedCategories = categorys.when(
+      data:
+          (categories) =>
+              categories.toList()
+                ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder)),
+      loading: () => [],
+      error: (_, __) => [],
+    );
 
     // フォーム部分のウィジェット
     Widget buildUrlForm() {
@@ -130,11 +136,17 @@ class VideoRegistrationScreen extends HookConsumerWidget {
                                           .add(
                                             nameController.text,
                                             descriptionController.text,
-                                          );
-                                      final newCategory =
-                                          ref.read(categorysProvider).last;
-                                      selectedCategoryId.value = newCategory.id;
-                                      Navigator.pop(context);
+                                          )
+                                          .then((_) {
+                                            // カテゴリー追加後に最新のリストを取得
+                                            categorys.whenData((categories) {
+                                              if (categories.isNotEmpty) {
+                                                selectedCategoryId.value =
+                                                    categories.last.id;
+                                              }
+                                            });
+                                            Navigator.pop(context);
+                                          });
                                     }
                                   },
                                   child: const Text('追加'),
@@ -217,22 +229,24 @@ class VideoRegistrationScreen extends HookConsumerWidget {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             final videoInfos = ref.read(videoInfosProvider);
-                            ref
-                                .read(videoInfosProvider.notifier)
-                                .addVideoInfo(
-                                  VideoInfo(
-                                    id: const Uuid().v4(),
-                                    title: controller.value!.metadata.title,
-                                    channelName:
-                                        controller.value!.metadata.author,
-                                    url: urlController.text,
-                                    index: videoInfos.length,
-                                    createdAt: DateTime.now(),
-                                    updatedAt: DateTime.now(),
-                                    categoryId: selectedCategoryId.value,
-                                  ),
-                                );
-                            Navigator.pop(context);
+                            videoInfos.whenData((videos) {
+                              ref
+                                  .read(videoInfosProvider.notifier)
+                                  .addVideoInfo(
+                                    VideoInfo(
+                                      id: const Uuid().v4(),
+                                      title: controller.value!.metadata.title,
+                                      channelName:
+                                          controller.value!.metadata.author,
+                                      url: urlController.text,
+                                      sortOrder: videos.length,
+                                      createdAt: DateTime.now(),
+                                      updatedAt: DateTime.now(),
+                                      categoryId: selectedCategoryId.value,
+                                    ),
+                                  );
+                              Navigator.pop(context);
+                            });
                           },
                           icon: const Icon(Icons.add, size: 28),
                           label: const Text(

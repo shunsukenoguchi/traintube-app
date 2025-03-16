@@ -1,101 +1,127 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
+import '../db/database_helper.dart';
 import '../models/video_info.dart';
+import '../repositories/video_repository.dart';
 
 part 'video_info_provider.g.dart';
 
-@riverpod
-class VideoInfos extends _$VideoInfos {
+@Riverpod(keepAlive: true)
+class VideoInfos extends AsyncNotifier<List<VideoInfo>> {
+  final VideoRepository _repository = VideoRepository(DatabaseHelper.instance);
+
   @override
-  List<VideoInfo> build() {
-    return [];
+  Future<List<VideoInfo>> build() async {
+    return _repository.getAll();
   }
 
-  void fetchVideoInfo(String url, {String? categoryId}) async {
-    final categoryVideos = categoryId == null 
-        ? state 
-        : state.where((video) => video.categoryId == categoryId).toList();
-    
-    final newCategoryIndex = categoryVideos.length;
-    
-    final videoInfo = VideoInfo(
+  Future<void> fetchVideoInfo(String url, {String? categoryId}) async {
+    final videos = await _repository.getAll();
+    final categoryVideos =
+        categoryId == null
+            ? videos
+            : videos.where((video) => video.categoryId == categoryId).toList();
+
+    final newCategorySortOrder = categoryVideos.length;
+
+    final newVideo = VideoInfo(
       id: const Uuid().v4(),
       url: url,
       title: 'title',
       channelName: 'channelName',
-      index: state.length,
-      categoryIndex: newCategoryIndex,
+      sortOrder: videos.length,
+      categorySortOrder: newCategorySortOrder,
       categoryId: categoryId,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
-    
-    state = [...state, videoInfo];
+
+    await _repository.insert(newVideo);
+    ref.invalidateSelf();
   }
 
-  void addVideoInfo(VideoInfo videoInfo) {
-    final categoryVideos = videoInfo.categoryId == null 
-        ? state 
-        : state.where((video) => video.categoryId == videoInfo.categoryId).toList();
-    
-    final newCategoryIndex = categoryVideos.length;
-    
-    state = [
-      ...state,
-      videoInfo.copyWith(
-        categoryIndex: newCategoryIndex,
-        index: state.length,
-      ),
-    ];
+  Future<void> addVideoInfo(VideoInfo videoInfo) async {
+    final videos = await _repository.getAll();
+    final categoryVideos =
+        videoInfo.categoryId == null
+            ? videos
+            : videos
+                .where((video) => video.categoryId == videoInfo.categoryId)
+                .toList();
+
+    final newCategorySortOrder = categoryVideos.length;
+
+    final updatedVideo = videoInfo.copyWith(
+      categorySortOrder: newCategorySortOrder,
+      sortOrder: videos.length,
+    );
+
+    await _repository.insert(updatedVideo);
+    ref.invalidateSelf();
   }
 
-  void updateIndex(String url, int newIndex, String? categoryId) {
-    final targetVideo = state.firstWhere((video) => video.url == url);
-    final oldIndex = targetVideo.categoryIndex;
-    
-    final updatedState = [
-      for (final videoInfo in state)
+  Future<void> updateCategorySortOrder(
+    String url,
+    int newCategorySortOrder,
+    String? categoryId,
+  ) async {
+    final videos = await _repository.getAll();
+    final targetVideo = videos.firstWhere((video) => video.url == url);
+    final oldCategorySortOrder = targetVideo.categorySortOrder;
+
+    final updatedVideos = [
+      for (final videoInfo in videos)
         if (videoInfo.url == url)
           videoInfo.copyWith(
-            categoryIndex: newIndex,
-            index: categoryId == null ? newIndex : videoInfo.index,
+            categorySortOrder: newCategorySortOrder,
+            sortOrder:
+                categoryId == null ? newCategorySortOrder : videoInfo.sortOrder,
           )
         else if (categoryId != null && videoInfo.categoryId == categoryId)
           videoInfo.copyWith(
-            categoryIndex: _adjustIndex(
-              currentIndex: videoInfo.categoryIndex,
-              oldIndex: oldIndex,
-              newIndex: newIndex,
+            categorySortOrder: _adjustCategorySortOrder(
+              currentSortOrder: videoInfo.categorySortOrder,
+              oldCategorySortOrder: oldCategorySortOrder,
+              newCategorySortOrder: newCategorySortOrder,
             ),
           )
         else
           videoInfo,
     ];
-    
-    state = updatedState;
+
+    // バッチ更新
+    await Future.wait(updatedVideos.map((video) => _repository.update(video)));
+    ref.invalidateSelf();
   }
 
-  int _adjustIndex({
-    required int currentIndex,
-    required int oldIndex,
-    required int newIndex,
+  int _adjustCategorySortOrder({
+    required int currentSortOrder,
+    required int oldCategorySortOrder,
+    required int newCategorySortOrder,
   }) {
-    if (currentIndex < oldIndex && currentIndex < newIndex) {
-      return currentIndex;
+    if (currentSortOrder < oldCategorySortOrder &&
+        currentSortOrder < newCategorySortOrder) {
+      return currentSortOrder;
     }
-    if (currentIndex > oldIndex && currentIndex > newIndex) {
-      return currentIndex;
+    if (currentSortOrder > oldCategorySortOrder &&
+        currentSortOrder > newCategorySortOrder) {
+      return currentSortOrder;
     }
-    if (currentIndex > oldIndex && currentIndex <= newIndex) {
-      return currentIndex - 1;
+    if (currentSortOrder > oldCategorySortOrder &&
+        currentSortOrder <= newCategorySortOrder) {
+      return currentSortOrder - 1;
     }
-    if (currentIndex < oldIndex && currentIndex >= newIndex) {
-      return currentIndex + 1;
+    if (currentSortOrder < oldCategorySortOrder &&
+        currentSortOrder >= newCategorySortOrder) {
+      return currentSortOrder + 1;
     }
-    return currentIndex;
+    return currentSortOrder;
   }
 
-  void removeVideoInfo(String url) {
-    state = state.where((element) => element.url != url).toList();
+  Future<void> removeVideoInfo(String url) async {
+    final videos = await _repository.getAll();
+    final targetVideo = videos.firstWhere((video) => video.url == url);
+    await _repository.delete(targetVideo.id);
+    ref.invalidateSelf();
   }
 }

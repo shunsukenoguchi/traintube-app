@@ -1,65 +1,86 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 import '../models/category.dart';
+import '../repositories/category_repository.dart';
+import '../db/database_helper.dart';
 
 part 'category_provider.g.dart';
 
-@riverpod
+final categoryRepositoryProvider = Provider<CategoryRepository>((ref) {
+  return CategoryRepository(DatabaseHelper.instance);
+});
+
+@Riverpod(keepAlive: true)
 class Categorys extends _$Categorys {
   @override
-  List<Category> build() {
-    final now = DateTime.now();
-    return [
-      Category(
+  Future<List<Category>> build() async {
+    final repository = ref.watch(categoryRepositoryProvider);
+    final categories = await repository.getAll();
+
+    if (categories.isEmpty) {
+      final now = DateTime.now();
+      final defaultCategory = Category(
         name: '全て',
         description: 'すべてのカテゴリー',
-        index: 0,
+        sortOrder: 0,
         createdAt: now,
         updatedAt: now,
-      ),
-    ];
+      );
+      await repository.insert(defaultCategory);
+      return [defaultCategory];
+    }
+
+    return categories;
   }
 
-  void add(String name, String description) {
+  Future<void> add(String name, String description) async {
+    final repository = ref.read(categoryRepositoryProvider);
+    final maxSortOrder = await repository.getMaxSortOrder();
+
     final newCategory = Category(
       name: name,
       description: description,
-      index: state.length,
+      sortOrder: maxSortOrder + 1,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
-    state = [state[0], ...state.sublist(1), newCategory];
+
+    await repository.insert(newCategory);
+    ref.invalidateSelf();
   }
 
-  void update(String id, {String? name, String? description, int? index}) {
-    state = [
-      for (final category in state)
-        if (category.id == id)
-          category.copyWith(
-            name: name ?? category.name,
-            description: description ?? category.description,
-            index: index ?? category.index,
-            updatedAt: DateTime.now(),
-          )
-        else
-          category,
-    ];
+  Future<void> updateCategory(
+    String id, {
+    String? name,
+    String? description,
+    int? sortOrder,
+  }) async {
+    final repository = ref.read(categoryRepositoryProvider);
+    final category = await repository.getById(id);
+
+    if (category != null) {
+      final updatedCategory = category.copyWith(
+        name: name ?? category.name,
+        description: description ?? category.description,
+        sortOrder: sortOrder ?? category.sortOrder,
+        updatedAt: DateTime.now(),
+      );
+
+      await repository.update(updatedCategory);
+      state = AsyncValue.data(await build());
+    }
   }
 
-  void updateOrder(List<Category> newOrder) {
-    state = [
-      for (var i = 0; i < newOrder.length; i++)
-        newOrder[i].copyWith(index: i),
-    ];
+  Future<void> updateOrder(List<Category> newOrder) async {
+    final repository = ref.read(categoryRepositoryProvider);
+    await repository.reorderCategories(newOrder);
+    state = AsyncValue.data(await build());
   }
 
-  void remove(String id) {
-    final newState = state.where((category) => category.id != id).toList();
-    // 削除後にインデックスを振り直す
-    state = [
-      for (var i = 0; i < newState.length; i++)
-        newState[i].copyWith(index: i),
-    ];
+  Future<void> remove(String id) async {
+    final repository = ref.read(categoryRepositoryProvider);
+    await repository.delete(id);
+    state = AsyncValue.data(await build());
   }
 }
 
@@ -67,8 +88,11 @@ class Categorys extends _$Categorys {
 class SelectedCategory extends _$SelectedCategory {
   @override
   String build() {
-    final categorys = ref.watch(categorysProvider);
-    return categorys.isNotEmpty ? categorys[0].id : '';
+    final categorysAsync = ref.watch(categorysProvider);
+    return switch (categorysAsync) {
+      AsyncData(:final value) => value.isNotEmpty ? value[0].id : '',
+      _ => '',
+    };
   }
 
   void select(String categoryId) {

@@ -5,7 +5,7 @@ class Category {
     String? id,
     required this.name,
     required this.description,
-    required this.index,
+    required this.sortOrder,
     required this.createdAt,
     required this.updatedAt,
   }) : id = id ?? const Uuid().v4();
@@ -13,14 +13,14 @@ class Category {
   final String id;
   final String name;
   final String description;
-  final int index;
+  final int sortOrder;
   final DateTime createdAt;
   final DateTime updatedAt;
 
   Category copyWith({
     String? name,
     String? description,
-    int? index,
+    int? sortOrder,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -28,7 +28,7 @@ class Category {
       id: id,
       name: name ?? this.name,
       description: description ?? this.description,
-      index: index ?? this.index,
+      sortOrder: sortOrder ?? this.sortOrder,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

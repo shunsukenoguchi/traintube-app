@@ -6,12 +6,12 @@ part of 'category_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$categorysHash() => r'da697157936fdbfa19e2f7804536b26430d4603b';
+String _$categorysHash() => r'6942ca483b06369ba0e32d16c565ac724ff681eb';
 
 /// See also [Categorys].
 @ProviderFor(Categorys)
 final categorysProvider =
-    AutoDisposeNotifierProvider<Categorys, List<Category>>.internal(
+    AsyncNotifierProvider<Categorys, List<Category>>.internal(
       Categorys.new,
       name: r'categorysProvider',
       debugGetCreateSourceHash:
@@ -22,8 +22,8 @@ final categorysProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$Categorys = AutoDisposeNotifier<List<Category>>;
-String _$selectedCategoryHash() => r'ea52a975a0aecff96fc7d5d28839e634e3233bd9';
+typedef _$Categorys = AsyncNotifier<List<Category>>;
+String _$selectedCategoryHash() => r'bc681683d1639609bd6043073909fec9710cb500';
 
 /// See also [SelectedCategory].
 @ProviderFor(SelectedCategory)
