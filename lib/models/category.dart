@@ -1,19 +1,32 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
-part 'category.freezed.dart';
-part 'category.g.dart';
+class Category {
+  Category({
+    String? id,
+    required this.name,
+    required this.description,
+    required this.createdAt,
+    required this.updatedAt,
+  }) : id = id ?? const Uuid().v4();
 
-@freezed
-class Category with _$Category {
-  const factory Category({
-    @Default('') String id,
-    required String name,
-    required String description,
-    required DateTime createdAt,
-    required DateTime updatedAt,
-  }) = _Category;
+  final String id;
+  final String name;
+  final String description;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
-  factory Category.fromJson(Map<String, dynamic> json) =>
-      _$CategoryFromJson(json);
+  Category copyWith({
+    String? name,
+    String? description,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return Category(
+      id: id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }

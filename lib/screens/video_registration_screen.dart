@@ -19,7 +19,7 @@ class VideoRegistrationScreen extends HookConsumerWidget {
     final isMute = useState(true);
     final controller = useState<YoutubePlayerController?>(null);
     final videoId = useState<String?>(null);
-    final selectedCategoryId = useState<String?>(null);
+    final selectedCategoryId = useState<String>(ref.watch(selectedCategoryProvider));
     final categorys = ref.watch(categorysProvider);
 
     // フォーム部分のウィジェット
@@ -68,23 +68,17 @@ class VideoRegistrationScreen extends HookConsumerWidget {
               Row(
                 children: [
                   Expanded(
-                    child: DropdownButtonFormField<String?>(
+                    child: DropdownButtonFormField<String>(
                       value: selectedCategoryId.value,
-                      decoration: const InputDecoration(labelText: 'ワークアウト'),
-                      items: [
-                        const DropdownMenuItem<String?>(
-                          value: null,
-                          child: Text('選択なし'),
-                        ),
-                        ...categorys.map((category) {
-                          return DropdownMenuItem<String?>(
-                            value: category.id,
-                            child: Text(category.name),
-                          );
-                        }),
-                      ],
+                      decoration: const InputDecoration(labelText: 'カテゴリー'),
+                      items: categorys.map((category) {
+                        return DropdownMenuItem<String>(
+                          value: category.id,
+                          child: Text(category.name),
+                        );
+                      }).toList(),
                       onChanged: (value) {
-                        selectedCategoryId.value = value;
+                        selectedCategoryId.value = value!;
                       },
                     ),
                   ),
@@ -98,14 +92,14 @@ class VideoRegistrationScreen extends HookConsumerWidget {
                         context: context,
                         builder:
                             (context) => AlertDialog(
-                              title: const Text('新規ワークアウト追加'),
+                              title: const Text('新規カテゴリー追加'),
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   TextField(
                                     controller: nameController,
                                     decoration: const InputDecoration(
-                                      labelText: 'ワークアウト名*',
+                                      labelText: 'カテゴリー名*',
                                     ),
                                   ),
                                   const SizedBox(height: 16),

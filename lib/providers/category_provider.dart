@@ -8,24 +8,23 @@ part 'category_provider.g.dart';
 class Categorys extends _$Categorys {
   @override
   List<Category> build() {
+    final now = DateTime.now();
     return [
       Category(
-        id: const Uuid().v4(),
         name: '全て',
-        description: 'すべてのワークアウト',
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
+        description: 'すべてのカテゴリー',
+        createdAt: now,
+        updatedAt: now,
       ),
     ];
   }
 
   void add(String name, String description) {
-    final now = DateTime.now();
-    final newCategory = Category(
-      name: name,
-      description: description,
-      createdAt: now,
-      updatedAt: now,
+  final newCategory = Category(
+    name: name,
+    description: description,
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
     );
     state = [state[0], ...state.sublist(1), newCategory];
   }
@@ -52,11 +51,12 @@ class Categorys extends _$Categorys {
 @riverpod
 class SelectedCategory extends _$SelectedCategory {
   @override
-  String? build() {
-    return null;
+  String build() {
+    final categorys = ref.watch(categorysProvider);
+    return categorys.isNotEmpty ? categorys[0].id : '';
   }
 
-  void select(String? categoryId) {
+  void select(String categoryId) {
     state = categoryId;
   }
 }
