@@ -15,30 +15,35 @@ class VideoInfos extends AsyncNotifier<List<VideoInfo>> {
     return _repository.getAll();
   }
 
-  Future<void> fetchVideoInfo(String url, {String? categoryId}) async {
+  Future<void> fetchVideos() async {
     final videos = await _repository.getAll();
-    final categoryVideos =
-        categoryId == null
-            ? videos
-            : videos.where((video) => video.categoryId == categoryId).toList();
-
-    final newCategorySortOrder = categoryVideos.length;
-
-    final newVideo = VideoInfo(
-      id: const Uuid().v4(),
-      url: url,
-      title: 'title',
-      channelName: 'channelName',
-      sortOrder: videos.length,
-      categorySortOrder: newCategorySortOrder,
-      categoryId: categoryId,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
-
-    await _repository.insert(newVideo);
-    ref.invalidateSelf();
+    // state = videos;
   }
+
+  // Future<void> fetchVideoInfo(String url, {String? categoryId}) async {
+  //   final videos = await _repository.getAll();
+  //   final categoryVideos =
+  //       categoryId == null
+  //           ? videos
+  //           : videos.where((video) => video.categoryId == categoryId).toList();
+
+  //   final newCategorySortOrder = categoryVideos.length;
+
+  //   final newVideo = VideoInfo(
+  //     id: const Uuid().v4(),
+  //     url: url,
+  //     title: 'title',
+  //     channelName: 'channelName',
+  //     sortOrder: videos.length,
+  //     categorySortOrder: newCategorySortOrder,
+  //     categoryId: categoryId,
+  //     createdAt: DateTime.now(),
+  //     updatedAt: DateTime.now(),
+  //   );
+
+  //   await _repository.insert(newVideo);
+  //   ref.invalidateSelf();
+  // }
 
   Future<void> addVideoInfo(VideoInfo videoInfo) async {
     final videos = await _repository.getAll();
@@ -118,9 +123,9 @@ class VideoInfos extends AsyncNotifier<List<VideoInfo>> {
     return currentSortOrder;
   }
 
-  Future<void> removeVideoInfo(String url) async {
+  Future<void> removeVideoInfo(String id) async {
     final videos = await _repository.getAll();
-    final targetVideo = videos.firstWhere((video) => video.url == url);
+    final targetVideo = videos.firstWhere((video) => video.id == id);
     await _repository.delete(targetVideo.id);
     ref.invalidateSelf();
   }
