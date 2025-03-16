@@ -34,9 +34,19 @@ class VideoListScreen extends HookConsumerWidget {
 
                     final filteredVideos =
                         videoInfos.where((video) {
-                          if (index == 0) return true;
+                          if (index == 0) {
+                            // 全ての動画の場合はグローバルインデックスでソート
+                            return true;
+                          }
                           return video.categoryId == category.id;
-                        }).toList();
+                        })
+                        .toList()
+                        ..sort((a, b) {
+                          if (index == 0) {
+                            return a.index.compareTo(b.index);
+                          }
+                          return a.categoryIndex.compareTo(b.categoryIndex);
+                        });
 
                     return filteredVideos.isEmpty
                         ? const Center(child: Text('動画が登録されていません'))
@@ -49,7 +59,7 @@ class VideoListScreen extends HookConsumerWidget {
                             final VideoInfo item = filteredVideos[oldIndex];
                             ref
                                 .read(videoInfosProvider.notifier)
-                                .updateIndex(item.url, newIndex);
+                                .updateIndex(item.url, newIndex, category.id);
                           },
                           itemBuilder: (context, index) {
                             final videoInfo = filteredVideos[index];

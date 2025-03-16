@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:uuid/uuid.dart';
 import '../models/video_info.dart';
 
 part 'video_info_provider.g.dart';
@@ -10,30 +11,88 @@ class VideoInfos extends _$VideoInfos {
     return [];
   }
 
-  void fetchVideoInfo(String url) {
+  void fetchVideoInfo(String url, {String? categoryId}) async {
+    final categoryVideos = categoryId == null 
+        ? state 
+        : state.where((video) => video.categoryId == categoryId).toList();
+    
+    final newCategoryIndex = categoryVideos.length;
+    
     final videoInfo = VideoInfo(
+      id: const Uuid().v4(),
       url: url,
       title: 'title',
       channelName: 'channelName',
-      index: 0,
+      index: state.length,
+      categoryIndex: newCategoryIndex,
+      categoryId: categoryId,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
+    
     state = [...state, videoInfo];
   }
 
   void addVideoInfo(VideoInfo videoInfo) {
-    state = [...state, videoInfo];
+    final categoryVideos = videoInfo.categoryId == null 
+        ? state 
+        : state.where((video) => video.categoryId == videoInfo.categoryId).toList();
+    
+    final newCategoryIndex = categoryVideos.length;
+    
+    state = [
+      ...state,
+      videoInfo.copyWith(
+        categoryIndex: newCategoryIndex,
+        index: state.length,
+      ),
+    ];
   }
 
-  void updateIndex(String url, int index) {
-    state = [
+  void updateIndex(String url, int newIndex, String? categoryId) {
+    final targetVideo = state.firstWhere((video) => video.url == url);
+    final oldIndex = targetVideo.categoryIndex;
+    
+    final updatedState = [
       for (final videoInfo in state)
         if (videoInfo.url == url)
-          videoInfo.copyWith(index: index)
+          videoInfo.copyWith(
+            categoryIndex: newIndex,
+            index: categoryId == null ? newIndex : videoInfo.index,
+          )
+        else if (categoryId != null && videoInfo.categoryId == categoryId)
+          videoInfo.copyWith(
+            categoryIndex: _adjustIndex(
+              currentIndex: videoInfo.categoryIndex,
+              oldIndex: oldIndex,
+              newIndex: newIndex,
+            ),
+          )
         else
           videoInfo,
     ];
+    
+    state = updatedState;
+  }
+
+  int _adjustIndex({
+    required int currentIndex,
+    required int oldIndex,
+    required int newIndex,
+  }) {
+    if (currentIndex < oldIndex && currentIndex < newIndex) {
+      return currentIndex;
+    }
+    if (currentIndex > oldIndex && currentIndex > newIndex) {
+      return currentIndex;
+    }
+    if (currentIndex > oldIndex && currentIndex <= newIndex) {
+      return currentIndex - 1;
+    }
+    if (currentIndex < oldIndex && currentIndex >= newIndex) {
+      return currentIndex + 1;
+    }
+    return currentIndex;
   }
 
   void removeVideoInfo(String url) {

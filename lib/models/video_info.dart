@@ -12,6 +12,7 @@ class VideoInfo with _$VideoInfo {
     required String title,
     required String channelName,
     required int index,
+    @Default(0) int categoryIndex,
     required DateTime createdAt,
     required DateTime updatedAt,
     String? categoryId,
