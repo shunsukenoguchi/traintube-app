@@ -1,4 +1,4 @@
-package com.example.traintube
+package com.snogucchi.traintube
 
 import io.flutter.embedding.android.FlutterActivity
 
